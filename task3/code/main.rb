@@ -1,4 +1,3 @@
-
 # It is our Library class I have declared it using class as we have in Python
 class LibraryItem
   attr_reader :title, :author, :year
@@ -79,7 +78,40 @@ class CD < LibraryItem
     print "\n"
   end
 end
+# it is our Library class that stores and manages a collection of library items
+class Library
+  def initialize
+    @items = []   # private and it means only Library methods can change it
+  end
 
+  def add_item(item)
+    @items << item
+    print "Added:#{item.title}\n"
+  end
+
+  def remove_item(title)
+    item = @items.find { |i| i.title == title } # for finding relevant items
+    if item
+      @items.delete(item) # we can use delete keyword
+      print "Removed: #{title}\n"
+    else
+      print "Not found: #{title}\n"
+    end
+  end
+  
+  # Now I will use apply polymorphism
+  def display_item(item)
+    item.display_info
+  end
+
+  def display_all_items
+    print "All items in the library (#{@items.size})\n"
+    @items.each do |item|
+      display_item(item)
+    end
+  end
+end
+    
 # I have created instances of different library items
 book = Book.new("Generics", "", 2026, "Programming")
 dvd = DVD.new("Dəli Kür", "İsmayıl", 2010, "National movie")
@@ -89,3 +121,18 @@ cd = CD.new("A Day at the Races", "Queen", 1976, "Rock")
 book.display_info
 dvd.display_info
 cd.display_info
+
+# I will create a library and add items to items
+
+library = Library.new
+library.add_item(book)
+library.add_item(dvd)
+library.add_item(cd)
+print "\n" 
+# It will display all information about items in the library
+library.display_all_items
+
+# Remove an item and show the library again
+library.remove_item("Dəli Kür")
+print "\n"
+library.display_all_items
