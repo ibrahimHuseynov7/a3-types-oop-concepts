@@ -26,11 +26,23 @@ void stackArray(void){
     result = arrays[0] +arrays[SIZE-1];
 }
 
+// Heap array, I have used malloc for allocation
+
+void heapArray(void){
+    int *arrays = malloc(SIZE*sizeof(int));
+    arrays[0] = 1;
+    arrays[SIZE-1] = 2;
+    result = arrays[0] + arrays[SIZE-1];
+    // Using free, we free memory
+    free(arrays);
+}
+
 int main(void)
 {
     clock_t start, end; // from time library for tracking runtime of static array
     double staticTime;
     double stackTime;
+    double heaptime;
     int i;
 
     printf("Array size: %d integers (%d KB)\n", SIZE, (int)(SIZE * sizeof(int) / 1024));
@@ -51,8 +63,16 @@ int main(void)
     end = clock();
     stackTime = (double)(end - start) / CLOCKS_PER_SEC * 1000;
 
+    // It is time for heap array, same just call stackArray() that I have
+    start = clock();
+    for (i = 0; i < CALLS; i++)
+        heapArray();
+    end = clock();
+    heaptime = (double)(end - start) / CLOCKS_PER_SEC * 1000;
+
     // Used to print how many times and how much per call time is taken
     printf("Static: %.3f ms (%.2f ns/call)\n", staticTime, staticTime * 1000000 / CALLS);
     printf("Stack: %.3f ms (%.2f ns/call)\n", stackTime, stackTime * 1000000 / CALLS);
+     printf("Heap: %.3f ms (%.2f ns/call)\n", heaptime, heaptime * 1000000 / CALLS);
     return 0;
 }
